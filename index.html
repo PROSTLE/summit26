@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Innovation Summit 2026 – Navigate the future of AI, robotics, web3 and tech innovation."/>
+  <title>Innovation Summit 2026 | Tech Club</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Razorpay Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <style>
+    .mobile-warning {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 100%);
+      z-index: 99999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .mobile-warning-content {
+      max-width: 400px;
+      background: rgba(20,27,46,0.95);
+      border: 2px solid #f97316;
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      box-shadow: 0 20px 60px rgba(249, 115, 22, 0.3);
+      animation: slideUp 0.6s cubic-bezier(.22,1,.36,1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .mobile-warning-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+    }
+
+    .mobile-warning-icon svg {
+      width: 40px;
+      height: 40px;
+      stroke: #000;
+      stroke-width: 2.5;
+    }
+
+    .mobile-warning h2 {
+      color: #f97316;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .mobile-warning p {
+      color: #a0b0d0;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .mobile-warning-btn {
+      background: #f97316;
+      color: #000;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+    }
+
+    .mobile-warning-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5);
+    }
+
+    .mobile-warning-dismiss {
+      margin-top: 1rem;
+      color: #64748b;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .mobile-warning-dismiss:hover {
+      color: #f97316;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-warning.show {
+        display: flex;
+      }
+    }
+
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --primary-glow: rgba(249,115,22,0.28);
+      --cyan-glow: rgba(56,189,248,0.28);
+      --bg: #0a0e1a;
+      --card: rgba(20,27,46,0.82);
+      --border: #2a3349;
+      --text: #f8f9fc;
+      --text-dim: #a0b0d0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #f87171;
+      --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="4" fill="%23fbbf24" opacity="0.3"/></g></svg>') 24 24, auto;
+    }
+
+    a, button, .payment-card, input, select, .timer-card, canvas {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="5" fill="%23fbbf24" opacity="0.4"/><circle cx="24" cy="6" r="6" fill="%23fbbf24" opacity="0.2"/></g></svg>') 24 24, pointer;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background:
+        linear-gradient(135deg, var(--bg), #0f172a),
+        radial-gradient(circle at 14px 14px, #ffffff4d 2px, transparent 3px);
+      background-size: 100% 100%, 45px 45px;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(#ffffff33 0 90deg, transparent 90deg 180deg);
+      background-size: 180px 180px;
+      opacity: 0.18;
+      animation: eat-dots 14s linear infinite;
+      pointer-events: none;
+      z-index: -3;
+    }
+    @keyframes eat-dots {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      50%  { transform: translate(10vw,-6vh) rotate(180deg); opacity:0.06; }
+      100% { transform: translate(0,0) rotate(360deg); }
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, transparent, var(--primary), transparent) left 22px top / 2px 100% no-repeat,
+        linear-gradient(to bottom, transparent, #38bdf8, transparent) right 22px top / 2px 100% no-repeat;
+      opacity: .25;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .side-orb {
+      position: fixed;
+      top: 20%;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: .35;
+      animation: floatOrb 14s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .side-orb.left {
+      left: -120px;
+      background: radial-gradient(circle, var(--primary), transparent 70%);
+    }
+    .side-orb.right {
+      right: -120px;
+      background: radial-gradient(circle, #38bdf8, transparent 70%);
+      animation-delay: 6s;
+    }
+    @keyframes floatOrb {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-90px); }
+    }
+
+    .pacman-bg {
+      position: fixed;
+      bottom: 8%;
+      left: -140px;
+      width: 140px;
+      height: 140px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 50px var(--primary-glow);
+      opacity: .3;
+      animation: pac-move 22s linear infinite;
+      z-index: -1;
+    }
+    .pacman-bg::before,
+    .pacman-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0 0 50% 0;
+      background: var(--bg);
+      animation: chomp 0.45s alternate infinite;
+    }
+    .pacman-bg::after { inset: auto 0 0 0; }
+    @keyframes chomp {
+      from { transform: rotate(35deg); }
+      to   { transform: rotate(-35deg); }
+    }
+    @keyframes pac-move {
+      0%   { left: -140px; }
+      40%  { left: 45%; }
+      100% { left: 110%; }
+    }
+
+    header {
+      padding: 6rem 1rem 4.5rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle, var(--primary-glow), transparent 65%);
+      animation: pulse 8s ease-in-out infinite;
+      z-index: -1;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: 0.35; }
+      50%     { transform: scale(1.2); opacity: 0.15; }
+    }
+
+    h1 {
+      font-size: clamp(3rem, 10vw, 4.5rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, #fff, var(--primary), #ffb26b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px var(--primary-glow);
+    }
+    .tagline {
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      margin-top: 0.8rem;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(10,14,26,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      list-style: none;
+      padding: 1rem 0;
+      margin: 0;
+    }
+    nav li {
+      display: inline-block;
+    }
+    nav a {
+      display: inline-block;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+    nav a:hover, nav a.active {
+      color: var(--primary);
+      background: rgba(249, 115, 22, 0.1);
+      text-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    main {
+      max-width: 860px;
+      margin: auto;
+      padding: 0 1.25rem 5rem;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.6rem;
+      margin: 3rem 0;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 45px -14px rgba(0,0,0,0.6);
+    }
+    h2, h3 { color: var(--primary); margin-bottom: 1.4rem; }
+
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 1.2rem;
+      margin-top: 2rem;
+    }
+    .timer-card {
+      text-align: center;
+      background: rgba(10,14,26,0.6);
+      border-radius: 14px;
+      padding: 1.2rem;
+      border: 1px solid var(--border);
+    }
+    .timer-card span {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 0 0 14px var(--primary-glow);
+    }
+    .timer-card div {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 0.5rem;
+    }
+
+    .progress-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2.8rem;
+      gap: 0.5rem;
+    }
+    .step-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #1f2937;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: #94a3b8;
+      transition: var(--transition);
+    }
+    .step-circle.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 18px var(--primary-glow);
+      transform: scale(1.12);
+    }
+    .step-line {
+      width: 70px;
+      height: 4px;
+      background: #1f2937;
+      border-radius: 2px;
+    }
+    .step-line.active { background: var(--primary); }
+
+    .field-wrapper {
+      position: relative;
+      margin-bottom: 2.2rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(10,14,26,0.95) !important;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text) !important;
+      font-size: 1.05rem;
+      outline: none;
+      transition: var(--transition);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px rgba(10,14,26,0.95) inset !important;
+      -webkit-text-fill-color: var(--text) !important;
+      caret-color: var(--text);
+    }
+    
+    input:focus, select:focus {
+      box-shadow: 0 0 0 4px var(--primary-glow);
+      border-color: var(--primary);
+    }
+    
+    label {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      pointer-events: none;
+      transition: var(--transition);
+      background: transparent;
+    }
+    input:focus + label,
+    input:not(:placeholder-shown) + label,
+    select:focus + label,
+    select:not([value=""]) + label {
+      top: -10px;
+      left: 12px;
+      font-size: 0.82rem;
+      background: var(--card);
+      padding: 0 6px;
+      color: var(--primary);
+    }
+
+    .email-status {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      display: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .email-status.checking {
+      display: block;
+      color: var(--warning);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--warning);
+    }
+
+    .email-status.available {
+      display: block;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+    }
+
+    .email-status.taken {
+      display: block;
+      color: var(--error);
+      background: rgba(248, 113, 113, 0.1);
+      border: 1px solid var(--error);
+    }
+
+    .already-registered-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .already-registered-modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--card);
+      border: 2px solid var(--error);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      animation: slideUp 0.4s ease;
+    }
+
+    .modal-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--error), #dc2626);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-icon svg {
+      width: 40px;
+      height: 40px;
+      stroke: white;
+      stroke-width: 3;
+    }
+
+    .modal-content h3 {
+      color: var(--error);
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-modal {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close {
+      background: var(--primary);
+      color: #000;
+    }
+
+    .btn-close:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--primary-glow);
+    }
+
+    .btn-resend {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-resend:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .payment-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 1.8rem 0 2.4rem;
+    }
+    .payment-card {
+      background: rgba(15,23,42,0.6);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .payment-card:hover,
+    .payment-card.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+      transform: translateY(-4px);
+    }
+    .payment-card .amount {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 0.6rem 0;
+    }
+    .payment-card .type {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+    button {
+      padding: 13px 24px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 6px 18px var(--primary-glow);
+    }
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 10px 30px var(--primary-glow);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled {
+      background: #475569;
+      color: #94a3b8;
+      cursor: not-allowed;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    #confirmation-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 1rem 1.6rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: #fff;
+      font-weight: 600;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: slideIn 0.6s cubic-bezier(.22,1,.36,1);
+      z-index: 1000;
+    }
+    @keyframes slideIn {
+      from { transform: translateY(40px) scale(0.95); opacity:0; }
+      to   { transform: translateY(0) scale(1); opacity:1; }
+    }
+
+    #dino-game {
+      text-align: center;
+    }
+    #game-canvas {
+      background: rgba(10,14,26,0.6);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      display: block;
+      margin: 1.5rem auto;
+    }
+    .game-info {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+    .game-score {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 0.5rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+    @media (max-width: 640px) {
+      .side-orb, .pacman-bg { display: none; }
+      .timer-grid { grid-template-columns: repeat(2,1fr); }
+      .payment-options { grid-template-columns: 1fr; }
+      .btn-group { flex-direction: column; gap: 0.8rem; }
+      nav ul { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+      #game-canvas { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-warning" id="mobile-warning">
+    <div class="mobile-warning-content">
+      <div class="mobile-warning-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+      </div>
+      <h2>Desktop Recommended</h2>
+      <p>For the best experience with seat selection, registration forms, and interactive elements, please visit this website on a laptop or desktop computer.</p>
+      <button class="mobile-warning-btn" onclick="window.open(window.location.href, '_blank')">
+        Open Anyway
+      </button>
+      <div class="mobile-warning-dismiss" onclick="dismissMobileWarning()">
+        Continue on mobile
+      </div>
+    </div>
+  </div>
+
+  <div class="already-registered-modal" id="already-registered-modal">
+    <div class="modal-content">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <h3>Already Registered!</h3>
+      <p>This email is already enrolled for Innovation Summit 2026. <br><br>Check your email <strong id="registered-email"></strong> for your ticket and event details.</p>
+      <div class="modal-actions">
+        <button class="btn-modal btn-close" onclick="closeAlreadyRegisteredModal()">Got It</button>
+        <button class="btn-modal btn-resend" onclick="resendConfirmationEmail()">Resend Email</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="side-orb left"></div>
+  <div class="side-orb right"></div>
+  <div class="pacman-bg"></div>
+
+  <header>
+    <h1>Innovation Summit 2026</h1>
+    <p class="tagline">Navigate the future • Eat knowledge • Avoid bugs</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index2.html">Event</a></li>
+      <li><a href="index.html" class="active">Register</a></li>
+      <li><a href="index3.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="event">
+      <h2>Event Overview</h2>
+      <p>Two epic days of AI, robotics, web3, developer tools and pure innovation.</p>
+      <div class="timer-grid">
+        <div class="timer-card"><span id="days">00</span><div>DAYS</div></div>
+        <div class="timer-card"><span id="hours">00</span><div>HOURS</div></div>
+        <div class="timer-card"><span id="minutes">00</span><div>MINUTES</div></div>
+        <div class="timer-card"><span id="seconds">00</span><div>SECONDS</div></div>
+      </div>
+    </section>
+
+    <section id="register">
+      <div class="progress-container">
+        <div class="step-circle active">1</div>
+        <div class="step-line"></div>
+        <div class="step-circle">2</div>
+        <div class="step-line"></div>
+        <div class="step-circle">3</div>
+        <div class="step-line"></div>
+        <div class="step-circle">4</div>
+      </div>
+
+      <form id="form" novalidate autocomplete="off">
+        <div class="form-step" id="step1">
+          <h3>Profile</h3>
+          <div class="field-wrapper">
+            <input type="text" id="name" required placeholder=" " autocomplete="off">
+            <label for="name">Full Name</label>
+          </div>
+          <div class="field-wrapper">
+            <input type="email" id="email" required placeholder=" " autocomplete="off">
+            <label for="email">Email</label>
+            <div class="email-status" id="email-status"></div>
+          </div>
+        </div>
+
+        <div class="form-step" id="step2" style="display:none">
+          <h3>Contact Power-up</h3>
+          <div class="field-wrapper">
+            <input type="tel" id="phone" required placeholder=" " pattern="[0-9]{10}" maxlength="10" autocomplete="off">
+            <label for="phone">Mobile Number (10 digits)</label>
+          </div>
+        </div>
+
+        <div class="form-step" id="step3" style="display:none">
+          <h3>More About You</h3>
+          
+          <div class="field-wrapper">
+            <select id="domain" required autocomplete="off">
+              <option value=""></option>
+              <option value="ai-ml">🤖 AI & Machine Learning</option>
+              <option value="web-dev">🌐 Web Development</option>
+              <option value="app-dev">📱 App Development</option>
+              <option value="blockchain">⛓️ Blockchain & Web3</option>
+              <option value="robotics">🦾 Robotics & IoT</option>
+              <option value="cybersecurity">🔒 Cybersecurity</option>
+              <option value="cloud">☁️ Cloud Computing</option>
+              <option value="data-science">📊 Data Science</option>
+            </select>
+            <label for="domain">Favorite Domain</label>
+          </div>
+
+          <div class="field-wrapper">
+            <select id="experience" required autocomplete="off">
+              <option value=""></option>
+              <option value="first-time">🆕 First time at a tech event</option>
+              <option value="few-times">🎯 Been to a few events</option>
+              <option value="regular">⭐ Regular at tech events</option>
+              <option value="veteran">🏆 Veteran attendee</option>
+            </select>
+            <label for="experience">Event Experience</label>
+          </div>
+
+          <div class="field-wrapper">
+            <select id="source" required autocomplete="off">
+              <option value=""></option>
+              <option value="social-media">📱 Social Media</option>
+              <option value="college-notice">📢 College Notice Board</option>
+              <option value="friend">👥 Friend told me</option>
+              <option value="club-member">🎮 I'm a club member</option>
+              <option value="poster">📝 Saw a poster</option>
+              <option value="website">🌐 Tech Club Website</option>
+              <option value="other">🔍 Other</option>
+            </select>
+            <label for="source">How did you hear about us?</label>
+          </div>
+        </div>
+
+        <div class="form-step" id="step4" style="display:none">
+          <h3>Choose Your Power Pellet</h3>
+          <div class="payment-options">
+            <div class="payment-card" data-value="virtual">
+              <div class="type">Virtual Pass</div>
+              <div class="amount">₹ 499</div>
+              <div style="font-size:0.9rem; color:var(--text-dim); margin-top:0.6rem;">
+                Live stream + recordings + Discord access
+              </div>
+            </div>
+            <div class="payment-card" data-value="in-person">
+              <div class="type">In-Person Pass</div>
+              <div class="amount">₹ 1499</div>
+              <div style="font-size:0.9rem; color:var(--text-dim); margin-top:0.6rem;">
+                Full access + swag + networking + food
+              </div>
+            </div>
+          </div>
+          <p style="font-size:0.9rem; color:var(--text-dim); text-align:center; margin-top:1rem;">
+            Secure payment via Razorpay / UPI / Cards
+          </p>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" id="btn-prev" class="btn-secondary">◄ Back</button>
+          <button type="button" id="btn-next" class="btn-primary">Next ►</button>
+          <button type="submit" id="btn-submit" class="btn-primary" style="display:none">
+            Proceed to Payment 💳
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section id="dino-game">
+      <h2>Waiting for Registration? 🦖</h2>
+      <p style="color:var(--text-dim); margin-bottom: 1rem;">Play the classic Chrome Dino game! Press SPACE or click to jump.</p>
+      <canvas id="game-canvas" width="600" height="200"></canvas>
+      <div class="game-info">Press SPACE or CLICK to start/jump • Avoid the cacti!</div>
+      <div class="game-score">Score: <span id="score">0</span> | High Score: <span id="high-score">0</span></div>
+    </section>
+  </main>
+
+  <div id="confirmation-toast" aria-live="polite">
+    ✓ Level Unlocked! Check your email for payment link & ticket.
+  </div>
+
+  <script>
+    'use strict';
+    
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCv2_J69ZSHvqtHZmyoDTzabSnysRuw12g",
+      authDomain: "summit26-849b4.firebaseapp.com",
+      projectId: "summit26-849b4",
+      storageBucket: "summit26-849b4.firebasestorage.app",
+      messagingSenderId: "170185003096",
+      appId: "1:170185003096:web:27a6c5e3af61fbfd797a2d"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    console.log('✅ Firebase initialized');
+
+    emailjs.init('vGq9SuSWj-zxBtQuN');
+    console.log('✅ EmailJS initialized');
+
+    const RAZORPAY_KEY = 'rzp_test_SDdi0bRwia1AA4';
+
+    let emailCheckTimeout;
+    let isEmailAvailable = true;
+    let existingRegistration = null;
+
+    const emailInput = document.getElementById('email');
+    const emailStatusDiv = document.getElementById('email-status');
+
+    emailInput.addEventListener('input', function() {
+      clearTimeout(emailCheckTimeout);
+      const email = this.value.trim().toLowerCase();
+      
+      emailStatusDiv.className = 'email-status';
+      emailStatusDiv.textContent = '';
+      emailInput.style.borderColor = '';
+      
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return;
+      }
+
+      emailStatusDiv.className = 'email-status checking';
+      emailStatusDiv.textContent = '🔍 Checking...';
+
+      emailCheckTimeout = setTimeout(async () => {
+        try {
+          const querySnapshot = await db.collection('registrations')
+            .where('email', '==', email)
+            .get();
+
+          if (!querySnapshot.empty) {
+            isEmailAvailable = false;
+            existingRegistration = querySnapshot.docs[0].data();
+            
+            emailStatusDiv.className = 'email-status taken';
+            emailStatusDiv.textContent = '✗ This email is already registered';
+            emailInput.style.borderColor = 'var(--error)';
+          } else {
+            isEmailAvailable = true;
+            existingRegistration = null;
+            
+            emailStatusDiv.className = 'email-status available';
+            emailStatusDiv.textContent = '✓ Email available';
+            emailInput.style.borderColor = 'var(--success)';
+          }
+        } catch (error) {
+          console.error('Email check error:', error);
+          emailStatusDiv.className = 'email-status';
+          emailStatusDiv.textContent = '';
+        }
+      }, 800);
+    });
+
+    function showAlreadyRegisteredModal(email) {
+      document.getElementById('registered-email').textContent = email;
+      document.getElementById('already-registered-modal').classList.add('show');
+    }
+
+    function closeAlreadyRegisteredModal() {
+      document.getElementById('already-registered-modal').classList.remove('show');
+    }
+
+    async function resendConfirmationEmail() {
+      if (!existingRegistration) return;
+      
+      const btn = event.target;
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      
+      try {
+        const basePrice = existingRegistration.ticketType === 'virtual' ? 499 : 1499;
+        const gstAmount = (basePrice * 0.18).toFixed(2);
+        const totalAmount = (basePrice + parseFloat(gstAmount)).toFixed(2);
+        
+        const templateId = existingRegistration.ticketType === 'virtual' ? 'template_virtual_pass' : 'template_97mc53r';
+        
+        const templateParams = {
+          to_email: existingRegistration.email,
+          to_name: existingRegistration.name,
+          order_number: existingRegistration.orderId || 'N/A',
+          order_date: existingRegistration.registeredAt ? new Date(existingRegistration.registeredAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString(),
+          seat_number: existingRegistration.seatNumber || 'Virtual',
+          event_name: 'Innovation Summit 2026',
+          event_date: 'March 15-16, 2026',
+          event_venue: 'VIT Vellore',
+          ticket_type: existingRegistration.ticketType === 'virtual' ? 'Virtual Pass' : 'In-Person Pass',
+          base_price: '₹' + basePrice,
+          gst_amount: '₹' + gstAmount,
+          total_amount: '₹' + totalAmount,
+          payment_id: existingRegistration.paymentId || 'N/A'
+        };
+
+        if (existingRegistration.ticketType === 'virtual') {
+          templateParams.streaming_link = 'https://stream.innovationsummit.com/2026';
+          templateParams.discord_link = 'https://discord.gg/innovationsummit2026';
+        }
+        
+        await emailjs.send('service_azkanxr', templateId, templateParams);
+        
+        alert('✅ Confirmation email resent successfully!');
+        closeAlreadyRegisteredModal();
+      } catch (error) {
+        console.error('Resend error:', error);
+        alert('❌ Failed to resend email. Please contact support.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Resend Email';
+      }
+    }
+
+    function checkMobileDevice() {
+      const isMobile = window.innerWidth <= 768;
+      const hasSeenWarning = sessionStorage.getItem('mobileWarningDismissed');
+      
+      if (isMobile && !hasSeenWarning) {
+        document.getElementById('mobile-warning').classList.add('show');
+      }
+    }
+
+    function dismissMobileWarning() {
+      sessionStorage.setItem('mobileWarningDismissed', 'true');
+      document.getElementById('mobile-warning').classList.remove('show');
+    }
+
+    window.addEventListener('load', checkMobileDevice);
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        document.getElementById('mobile-warning').classList.remove('show');
+      }
+    });
+
+    const trails = [];
+    const trailCount = 5;
+
+    for (let i = 0; i < trailCount; i++) {
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      document.body.appendChild(trail);
+      trails.push({
+        element: trail,
+        x: 0,
+        y: 0,
+        opacity: 1 - (i / trailCount)
+      });
+    }
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateTrails() {
+      trails.forEach((trail, index) => {
+        if (index === 0) {
+          trail.x = mouseX;
+          trail.y = mouseY;
+        } else {
+          const prevTrail = trails[index - 1];
+          trail.x += (prevTrail.x - trail.x) * 0.3;
+          trail.y += (prevTrail.y - trail.y) * 0.3;
+        }
+
+        trail.element.style.left = trail.x + 'px';
+        trail.element.style.top = trail.y + 'px';
+        trail.element.style.opacity = trail.opacity;
+      });
+
+      requestAnimationFrame(animateTrails);
+    }
+
+    animateTrails();
+
+    let trailTimeout;
+    document.addEventListener('mousemove', () => {
+      trails.forEach(trail => trail.element.style.opacity = trail.opacity);
+      clearTimeout(trailTimeout);
+      trailTimeout = setTimeout(() => {
+        trails.forEach(trail => trail.element.style.opacity = 0);
+      }, 1000);
+    });
+
+    const form = document.getElementById("form");
+    const steps = document.querySelectorAll(".form-step");
+    const circles = document.querySelectorAll(".step-circle");
+    const lines = document.querySelectorAll(".step-line");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
+    const btnSubmit = document.getElementById("btn-submit");
+
+    let currentStep = 1;
+
+    function updateUI() {
+      steps.forEach((step, i) => {
+        step.style.display = i + 1 === currentStep ? "" : "none";
+      });
+
+      circles.forEach((c, i) => {
+        c.classList.toggle("active", i + 1 <= currentStep);
+      });
+
+      lines.forEach((l, i) => {
+        l.classList.toggle("active", i + 1 < currentStep);
+      });
+
+      btnPrev.style.display = currentStep > 1 ? "" : "none";
+      btnNext.style.display = currentStep < 4 ? "" : "none";
+      btnSubmit.style.display = currentStep === 4 ? "" : "none";
+    }
+
+    function validateCurrentStep() {
+      const active = document.querySelector(".form-step:not([style*='none'])");
+      const required = active.querySelectorAll("[required]");
+      let ok = true;
+
+      required.forEach(el => {
+        if (!el.checkValidity()) {
+          el.reportValidity();
+          ok = false;
+        }
+      });
+
+      if (currentStep === 1 && !isEmailAvailable) {
+        showAlreadyRegisteredModal(emailInput.value);
+        ok = false;
+      }
+
+      if (currentStep === 4) {
+        if (!document.querySelector(".payment-card.selected")) {
+          alert("Please select a ticket type");
+          ok = false;
+        }
+      }
+
+      return ok;
+    }
+
+    btnNext.addEventListener("click", () => {
+      if (validateCurrentStep()) {
+        currentStep++;
+        updateUI();
+      }
+    });
+
+    btnPrev.addEventListener("click", () => {
+      currentStep--;
+      updateUI();
+    });
+
+    document.querySelectorAll(".payment-card").forEach(card => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".payment-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        
+        const paymentType = card.getAttribute("data-value");
+        
+        if (paymentType === 'in-person') {
+          btnSubmit.textContent = 'Select Seat & Pay 💳';
+        } else {
+          btnSubmit.textContent = 'Proceed to Payment 💳';
+        }
+      });
+    });
+
+    function initRazorpayPayment(formData, basePrice, totalAmount) {
+  const options = {
+    key: RAZORPAY_KEY,
+    amount: Math.round(totalAmount * 100),
+    currency: 'INR',
+    name: 'Innovation Summit 2026',
+    description: formData.ticketType === 'virtual' ? 'Virtual Pass' : 'In-Person Pass',
+    image: 'https://your-logo-url.com/logo.png',
+    handler: async function(response) {
+      console.log('✅ Payment Success:', response);
+      await handlePaymentSuccess(response, formData, basePrice, totalAmount);
+    },
+    prefill: {
+      name: formData.name,
+      email: formData.email,
+      contact: formData.phone
+    },
+    theme: {
+      color: '#f97316'
+    },
+    modal: {
+      ondismiss: function() {
+        console.log('❌ Payment cancelled');
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = formData.ticketType === 'in-person' ? 'Select Seat & Pay 💳' : 'Proceed to Payment 💳';
+        alert('Payment cancelled. Please try again when ready.');
+      }
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
+
+    async function handlePaymentSuccess(razorpayResponse, formData, basePrice, totalAmount) {
+  try {
+    // 1. Create PENDING document first
+    const pendingData = {
+      ...formData,
+      paymentStatus: 'pending',
+      razorpayPaymentId: razorpayResponse.razorpay_payment_id,
+      attemptedAt: firebase.firestore.Timestamp.now(),
+      orderId: 'PENDING-' + Date.now().toString().slice(-10)
+    };
+
+    const pendingRef = await db.collection('registrations').add(pendingData);
+    const docId = pendingRef.id;
+
+    console.log('Pending registration created → ID:', docId);
+
+    // 2. Inform user
+    alert('Payment received! Finalizing your registration... Please do not close this tab.');
+
+    // 3. Small delay to simulate verification step
+    //    (in production you would call Cloud Function or Razorpay verify API here)
+    await new Promise(resolve => setTimeout(resolve, 2200));
+
+    // 4. Mark as success (this part is still client-side → not 100% secure yet)
+    await pendingRef.update({
+      paymentStatus: 'success',
+      verifiedAt: firebase.firestore.Timestamp.now(),
+      razorpayOrderId: razorpayResponse.razorpay_order_id || 'N/A',
+      razorpaySignature: razorpayResponse.razorpay_signature || 'N/A',
+      // You can add more fields if needed
+    });
+
+    console.log('Registration finalized successfully');
+
+    // ───────────────────────────────────────────────
+    // PASTE YOUR ORIGINAL EMAIL SENDING CODE HERE
+    // (the part that uses emailjs.send(...) )
+    // Example placeholder — replace with your actual code:
+    /*
+    const templateParams = {
+      to_email: formData.email,
+      to_name: formData.name,
+      order_number: pendingData.orderId,
+      ticket_type: formData.ticketType === 'virtual' ? 'Virtual Pass' : 'In-Person Pass',
+      amount: '₹' + totalAmount,
+      payment_id: razorpayResponse.razorpay_payment_id,
+      // ... other fields you were sending ...
+    };
+
+    await emailjs.send('service_azkanxr', 'your_template_id', templateParams);
+    */
+    // ───────────────────────────────────────────────
+
+    // 5. Store some data in localStorage (keeping your original behavior)
+    localStorage.setItem('userName', formData.name);
+    localStorage.setItem('userEmail', formData.email);
+    localStorage.setItem('seatNumber', formData.seatNumber);
+    localStorage.setItem('ticketType', formData.ticketType);
+    localStorage.setItem('orderId', pendingData.orderId);
+    localStorage.setItem('paymentId', razorpayResponse.razorpay_payment_id);
+
+    // Clean up session
+    sessionStorage.removeItem('registrationData');
+    sessionStorage.removeItem('selectedSeat');
+
+    // 6. Redirect with docId (useful for thank-you page)
+    const redirectUrl = formData.ticketType === 'virtual'
+      ? `index7.html?seat=virtual&email=${encodeURIComponent(formData.email)}&name=${encodeURIComponent(formData.name)}&ticketType=virtual&payment_id=${razorpayResponse.razorpay_payment_id}&order_id=${pendingData.orderId}&docId=${docId}&status=success`
+      : `index5.html?seat=${formData.seatNumber}&email=${encodeURIComponent(formData.email)}&name=${encodeURIComponent(formData.name)}&ticketType=in-person&payment_id=${razorpayResponse.razorpay_payment_id}&order_id=${pendingData.orderId}&docId=${docId}&status=success`;
+
+    window.location.href = redirectUrl;
+
+  } catch (err) {
+    console.error('Finalization failed:', err);
+    alert('Payment appears to have gone through, but we could not finalize your registration.\n\nPlease contact support and give them this Payment ID:\n' + razorpayResponse.razorpay_payment_id);
+
+    // Optional: clean up the pending document if you want strict atomicity
+    // try { await pendingRef.delete(); } catch(e) { console.warn("Could not delete pending doc"); }
+  }
+}
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      if (!validateCurrentStep()) return;
+      
+      if (!isEmailAvailable) {
+        showAlreadyRegisteredModal(emailInput.value);
+        return;
+      }
+
+      const selectedCard = document.querySelector(".payment-card.selected");
+      const paymentType = selectedCard.getAttribute("data-value");
+      
+      btnSubmit.disabled = true;
+      
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value.toLowerCase(),
+        phone: document.getElementById('phone').value,
+        domain: document.getElementById('domain').value,
+        experience: document.getElementById('experience').value,
+        source: document.getElementById('source').value,
+        ticketType: paymentType,
+        seatNumber: paymentType === 'in-person' ? (sessionStorage.getItem('selectedSeat') || 'pending') : 'virtual',
+        paymentStatus: 'pending'
+      };
+
+      const basePrice = paymentType === 'virtual' ? 499 : 1499;
+      const gstAmount = (basePrice * 0.18).toFixed(2);
+      const totalAmount = (basePrice + parseFloat(gstAmount)).toFixed(2);
+
+      if (paymentType === 'in-person' && formData.seatNumber === 'pending') {
+  btnSubmit.textContent = "Redirecting to Seat Selection...";
+
+  // Create pending document FIRST (like in virtual path)
+  const pendingData = {
+    ...formData,
+    seatNumber: 'pending',           // will be updated later
+    paymentStatus: 'pending',
+    attemptedAt: firebase.firestore.Timestamp.now(),
+    orderId: 'PENDING-' + Date.now().toString().slice(-10)
+  };
+
+  try {
+    const pendingRef = await db.collection('registrations').add(pendingData);
+    const docId = pendingRef.id;
+
+    // Store docId so audit.html and index4.html can find it
+    sessionStorage.setItem('currentRegDocId', docId);
+    sessionStorage.setItem('registrationData', JSON.stringify(pendingData));
+    sessionStorage.setItem('pendingPayment', 'true');
+
+    console.log('Pending doc created for in-person → ID:', docId);
+
+    setTimeout(() => {
+      window.location.href = 'audit.html';
+    }, 800);
+  } catch (err) {
+    console.error('Failed to create pending registration:', err);
+    alert('Could not start registration. Try again or contact support.');
+  }
+
+  return;  // important - stop other code
+}
+
+     
+      
+      btnSubmit.textContent = "Opening Payment Gateway...";
+      
+      setTimeout(() => {
+        initRazorpayPayment(formData, basePrice, totalAmount);
+      }, 500);
+    });
+
+    window.addEventListener('load', () => {
+      const pendingPayment = sessionStorage.getItem('pendingPayment');
+      const selectedSeat = sessionStorage.getItem('selectedSeat');
+      const savedFormData = sessionStorage.getItem('registrationData');
+      
+      if (pendingPayment === 'true' && selectedSeat && savedFormData) {
+        console.log('✅ Returned from seat selection with seat:', selectedSeat);
+        
+        currentStep = 4;
+        updateUI();
+        
+        document.querySelector('.payment-card[data-value="in-person"]').classList.add('selected');
+        btnSubmit.innerHTML = 'Complete Payment 💳';
+        btnSubmit.style.display = '';
+        
+        sessionStorage.removeItem('pendingPayment');
+        
+        alert('✅ Seat ' + selectedSeat + ' selected! Click "Complete Payment" to proceed.');
+      }
+    });
+
+    updateUI();
+
+    const target = new Date("2026-03-15T09:00:00+05:30").getTime();
+    setInterval(() => {
+      const d = target - Date.now();
+      if (d < 0) return;
+      document.getElementById("days").textContent    = Math.floor(d / 864e5).toString().padStart(2,"0");
+      document.getElementById("hours").textContent   = Math.floor(d % 864e5 / 36e5).toString().padStart(2,"0");
+      document.getElementById("minutes").textContent = Math.floor(d % 36e5 / 6e4).toString().padStart(2,"0");
+      document.getElementById("seconds").textContent = Math.floor(d % 6e4 / 1e3).toString().padStart(2,"0");
+    }, 980);
+
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let gameRunning = false;
+    let gamePaused = false;
+    let score = 0;
+    let highScore = localStorage.getItem('dinoHighScore') || 0;
+    document.getElementById('high-score').textContent = highScore;
+
+    const dino = { x: 50, y: 150, width: 20, height: 40, dy: 0, gravity: 0.6, jumpPower: -12, grounded: true };
+    const obstacles = [];
+    let frameCount = 0;
+    let gameSpeed = 3;
+    let nextObstacleSpawn = Math.floor(Math.random() * 80) + 80;
+
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+      input.addEventListener('focus', () => { gamePaused = true; });
+      input.addEventListener('blur', () => { gamePaused = false; });
+    });
+
+    function drawDino() {
+      ctx.fillStyle = '#f97316';
+      ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(dino.x + 12, dino.y + 8, 4, 4);
+    }
+
+    function drawObstacle(obs) {
+      ctx.fillStyle = '#10b981';
+      ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+    }
+
+    function drawGround() {
+      ctx.strokeStyle = '#2a3349';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, 190);
+      ctx.lineTo(600, 190);
+      ctx.stroke();
+    }
+
+    function jump() {
+      if (dino.grounded && !gamePaused) {
+        dino.dy = dino.jumpPower;
+        dino.grounded = false;
+      }
+    }
+
+    function update() {
+      if (!gameRunning || gamePaused) return;
+
+      dino.dy += dino.gravity;
+      dino.y += dino.dy;
+
+      if (dino.y >= 150) {
+        dino.y = 150;
+        dino.dy = 0;
+        dino.grounded = true;
+      }
+
+      frameCount++;
+      if (frameCount >= nextObstacleSpawn) {
+        obstacles.push({ x: 600, y: 165, width: 15, height: 25 });
+        frameCount = 0;
+        nextObstacleSpawn = Math.floor(Math.random() * 80) + 80;
+      }
+
+      obstacles.forEach((obs, index) => {
+        obs.x -= gameSpeed;
+        if (obs.x + obs.width < 0) {
+          obstacles.splice(index, 1);
+          score++;
+          document.getElementById('score').textContent = score;
+          if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('dinoHighScore', highScore);
+            document.getElementById('high-score').textContent = highScore;
+          }
+        }
+
+        if (dino.x < obs.x + obs.width && dino.x + dino.width > obs.x && dino.y < obs.y + obs.height && dino.y + dino.height > obs.y) {
+          gameOver();
+        }
+      });
+
+      gameSpeed = 3 + score * 0.02;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, 600, 200);
+      drawGround();
+      drawDino();
+      obstacles.forEach(drawObstacle);
+      ctx.fillStyle = '#f8f9fc';
+      ctx.font = '14px Plus Jakarta Sans';
+      ctx.fillText('Score: ' + score, 10, 20);
+
+      if (gamePaused && gameRunning) {
+        ctx.fillStyle = '#f97316';
+        ctx.font = 'bold 20px Plus Jakarta Sans';
+        ctx.textAlign = 'center';
+        ctx.fillText('PAUSED', 300, 100);
+        ctx.textAlign = 'left';
+      }
+    }
+
+    function gameLoop() {
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    function startGame() {
+      if (!gameRunning && !gamePaused) {
+        gameRunning = true;
+        score = 0;
+        frameCount = 0;
+        gameSpeed = 3;
+        obstacles.length = 0;
+        dino.y = 150;
+        dino.dy = 0;
+        dino.grounded = true;
+        nextObstacleSpawn = Math.floor(Math.random() * 80) + 80;
+        document.getElementById('score').textContent = score;
+      }
+    }
+
+    function gameOver() {
+      gameRunning = false;
+      ctx.fillStyle = '#f97316';
+      ctx.font = 'bold 24px Plus Jakarta Sans';
+      ctx.textAlign = 'center';
+      ctx.fillText('GAME OVER!', 300, 80);
+      ctx.font = '14px Plus Jakarta Sans';
+      ctx.fillText('Click or press SPACE to restart', 300, 110);
+      ctx.textAlign = 'left';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !gamePaused) {
+        e.preventDefault();
+        if (gameRunning) { jump(); } else { startGame(); }
+      }
+    });
+
+    canvas.addEventListener('click', () => {
+      if (!gamePaused) {
+        if (gameRunning) { jump(); } else { startGame(); }
+      }
+    });
+
+    gameLoop();
+
+    ctx.fillStyle = '#f97316';
+    ctx.font = 'bold 20px Plus Jakarta Sans';
+    ctx.textAlign = 'center';
+    ctx.fillText('Press SPACE or CLICK to Start', 300, 100);
+    ctx.textAlign = 'left';
+  </script>
+</body>
+</html>

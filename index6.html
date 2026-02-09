@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Payment Failed - Innovation Summit 2026"/>
+  <title>Payment Failed | Innovation Summit 2026</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --primary-glow: rgba(249,115,22,0.28);
+      --cyan-glow: rgba(56,189,248,0.28);
+      --bg: #0a0e1a;
+      --card: rgba(20,27,46,0.82);
+      --border: #2a3349;
+      --text: #f8f9fc;
+      --text-dim: #a0b0d0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --error-dark: #dc2626;
+      --error-glow: rgba(239,68,68,0.3);
+      --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="4" fill="%23fbbf24" opacity="0.3"/></g></svg>') 24 24, auto;
+    }
+
+    /* Custom cursor for clickable elements */
+    a, button {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="5" fill="%23fbbf24" opacity="0.4"/><circle cx="24" cy="6" r="6" fill="%23fbbf24" opacity="0.2"/></g></svg>') 24 24, pointer;
+    }
+
+    /* Cursor trail effect */
+    .cursor-trail {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background:
+        linear-gradient(135deg, var(--bg), #0f172a),
+        radial-gradient(circle at 14px 14px, #ffffff4d 2px, transparent 3px);
+      background-size: 100% 100%, 45px 45px;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(#ffffff33 0 90deg, transparent 90deg 180deg);
+      background-size: 180px 180px;
+      opacity: 0.18;
+      animation: eat-dots 14s linear infinite;
+      pointer-events: none;
+      z-index: -3;
+    }
+    @keyframes eat-dots {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      50%  { transform: translate(10vw,-6vh) rotate(180deg); opacity:0.06; }
+      100% { transform: translate(0,0) rotate(360deg); }
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, transparent, var(--error), transparent) left 22px top / 2px 100% no-repeat,
+        linear-gradient(to bottom, transparent, #38bdf8, transparent) right 22px top / 2px 100% no-repeat;
+      opacity: .25;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .side-orb {
+      position: fixed;
+      top: 20%;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: .35;
+      animation: floatOrb 14s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .side-orb.left {
+      left: -120px;
+      background: radial-gradient(circle, var(--error), transparent 70%);
+    }
+    .side-orb.right {
+      right: -120px;
+      background: radial-gradient(circle, #38bdf8, transparent 70%);
+      animation-delay: 6s;
+    }
+    @keyframes floatOrb {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-90px); }
+    }
+
+    .pacman-bg {
+      position: fixed;
+      bottom: 8%;
+      left: -140px;
+      width: 140px;
+      height: 140px;
+      background: var(--error);
+      border-radius: 50%;
+      box-shadow: 0 0 50px var(--error-glow);
+      opacity: .3;
+      animation: pac-move 22s linear infinite, shake 2s ease-in-out infinite;
+      z-index: -1;
+    }
+    .pacman-bg::before,
+    .pacman-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0 0 50% 0;
+      background: var(--bg);
+      animation: chomp 0.45s alternate infinite;
+    }
+    .pacman-bg::after { inset: auto 0 0 0; }
+    @keyframes chomp {
+      from { transform: rotate(35deg); }
+      to   { transform: rotate(-35deg); }
+    }
+    @keyframes pac-move {
+      0%   { left: -140px; }
+      40%  { left: 45%; }
+      100% { left: 110%; }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .error-container {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 45px -14px rgba(0,0,0,0.6);
+      text-align: center;
+      animation: slideUp 0.6s cubic-bezier(.22,1,.36,1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .error-container::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.1), transparent 60%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .error-wrapper {
+      position: relative;
+      margin: 0 auto 2rem;
+      width: 120px;
+      height: 120px;
+    }
+
+    .error-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--error), var(--error-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.5s cubic-bezier(.22,1,.36,1);
+      box-shadow: 0 10px 40px var(--error-glow);
+      position: relative;
+    }
+
+    @keyframes scaleIn {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .error-mark {
+      width: 60px;
+      height: 60px;
+      position: relative;
+    }
+
+    .error-mark::before,
+    .error-mark::after {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 60px;
+      background: white;
+      border-radius: 4px;
+      top: 0;
+      left: 28px;
+      animation: drawLine 0.3s ease-out forwards;
+      transform-origin: center;
+    }
+
+    .error-mark::before {
+      transform: rotate(45deg) scaleY(0);
+      animation-delay: 0.3s;
+    }
+
+    .error-mark::after {
+      transform: rotate(-45deg) scaleY(0);
+      animation-delay: 0.5s;
+    }
+
+    @keyframes drawLine {
+      to { transform: rotate(45deg) scaleY(1); }
+    }
+
+    .error-mark::after {
+      animation-name: drawLine2;
+    }
+
+    @keyframes drawLine2 {
+      to { transform: rotate(-45deg) scaleY(1); }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--error), var(--error-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      animation: fadeIn 0.6s ease-in 0.4s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+      animation: fadeIn 0.6s ease-in 0.5s both;
+    }
+
+    .error-info {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--error);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.6s ease-in 0.6s both;
+    }
+
+    .error-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .error-row:last-child {
+      border-bottom: none;
+    }
+
+    .error-label {
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .error-value {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .error-reason {
+      background: rgba(10,14,26,0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      animation: fadeIn 0.6s ease-in 0.7s both;
+    }
+
+    .error-reason h3 {
+      color: var(--error);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .error-reason ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .error-reason li {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .error-reason li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--error);
+      font-size: 1.2rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      animation: fadeIn 0.6s ease-in 0.8s both;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 6px 18px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 30px var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .help-notice {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid #38bdf8;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: fadeIn 0.6s ease-in 0.9s both;
+    }
+
+    .help-notice svg {
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+      .actions {
+        grid-template-columns: 1fr;
+      }
+      .side-orb, .pacman-bg { display: none; }
+      .error-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="side-orb left"></div>
+  <div class="side-orb right"></div>
+  <div class="pacman-bg"></div>
+
+  <div class="error-container">
+    <!-- Error X Mark -->
+    <div class="error-wrapper">
+      <div class="error-circle">
+        <div class="error-mark"></div>
+      </div>
+    </div>
+
+    <h1>Payment Failed</h1>
+    <p class="subtitle">We couldn't process your payment</p>
+
+    <!-- Error Information -->
+    <div class="error-info">
+      <div class="error-row">
+        <span class="error-label">Transaction ID</span>
+        <span class="error-value" id="transaction-id">TXN-2026-XXXXX</span>
+      </div>
+      <div class="error-row">
+        <span class="error-label">Seat</span>
+        <span class="error-value" id="seat-number">Seat #42</span>
+      </div>
+      <div class="error-row">
+        <span class="error-label">Amount</span>
+        <span class="error-value">₹ 1,768.82</span>
+      </div>
+      <div class="error-row">
+        <span class="error-label">Status</span>
+        <span class="error-value" style="color: var(--error);">Failed</span>
+      </div>
+    </div>
+
+    <!-- Error Reason -->
+    <div class="error-reason">
+      <h3>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Possible Reasons
+      </h3>
+      <ul>
+        <li>Insufficient funds in your account</li>
+        <li>Payment method declined by bank</li>
+        <li>Network connectivity issue</li>
+        <li>Incorrect payment details entered</li>
+        <li>Transaction timeout</li>
+      </ul>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn btn-primary" onclick="retryPayment()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"/>
+          <polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        Retry Payment
+      </button>
+      <a href="index.html" class="btn btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+
+    <!-- Help Notice -->
+    <div class="help-notice">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <p>Need help? Contact support at <strong style="color:#38bdf8;">support@techclub.in</strong> or call us at <strong style="color:#38bdf8;">1800-XXX-XXXX</strong></p>
+    </div>
+  </div>
+
+  <script>
+    // ── CURSOR TRAIL EFFECT ────────────────────────────
+    const trails = [];
+    const trailCount = 5;
+
+    // Create trail elements
+    for (let i = 0; i < trailCount; i++) {
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      document.body.appendChild(trail);
+      trails.push({
+        element: trail,
+        x: 0,
+        y: 0,
+        opacity: 1 - (i / trailCount)
+      });
+    }
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateTrails() {
+      trails.forEach((trail, index) => {
+        if (index === 0) {
+          trail.x = mouseX;
+          trail.y = mouseY;
+        } else {
+          const prevTrail = trails[index - 1];
+          trail.x += (prevTrail.x - trail.x) * 0.3;
+          trail.y += (prevTrail.y - trail.y) * 0.3;
+        }
+
+        trail.element.style.left = trail.x + 'px';
+        trail.element.style.top = trail.y + 'px';
+        trail.element.style.opacity = trail.opacity;
+      });
+
+      requestAnimationFrame(animateTrails);
+    }
+
+    animateTrails();
+
+    // Show trails on mouse move
+    let trailTimeout;
+    document.addEventListener('mousemove', () => {
+      trails.forEach(trail => trail.element.style.opacity = trail.opacity);
+      clearTimeout(trailTimeout);
+      trailTimeout = setTimeout(() => {
+        trails.forEach(trail => trail.element.style.opacity = 0);
+      }, 1000);
+    });
+
+    // ── FAILED PAGE LOGIC ────────────────────────────
+    // Get seat number from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const seatNumber = urlParams.get('seat') || '42';
+    document.getElementById('seat-number').textContent = `Seat #${seatNumber}`;
+
+    // Generate random transaction ID
+    const transactionId = 'TXN-2026-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+    document.getElementById('transaction-id').textContent = transactionId;
+
+    // Retry payment function
+    function retryPayment() {
+      // Redirect back to checkout page with seat number
+      window.location.href = 'index4.html?seat=' + seatNumber;
+    }
+
+    // Optional: Log failure for analytics
+    console.log('Payment failed for seat:', seatNumber);
+    console.log('Transaction ID:', transactionId);
+  </script>
+</body>
+</html>

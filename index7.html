@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Virtual Registration Successful - Innovation Summit 2026"/>
+  <title>Virtual Pass Confirmed! | Innovation Summit 2026</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --primary-glow: rgba(249,115,22,0.28);
+      --cyan: #38bdf8;
+      --cyan-glow: rgba(56,189,248,0.28);
+      --bg: #0a0e1a;
+      --card: rgba(20,27,46,0.82);
+      --border: #2a3349;
+      --text: #f8f9fc;
+      --text-dim: #a0b0d0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #f87171;
+      --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    * { 
+      margin:0; 
+      padding:0; 
+      box-sizing:border-box;
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="4" fill="%23fbbf24" opacity="0.3"/></g></svg>') 24 24, auto;
+    }
+
+    a, button {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="5" fill="%23fbbf24" opacity="0.4"/><circle cx="24" cy="6" r="6" fill="%23fbbf24" opacity="0.2"/></g></svg>') 24 24, pointer;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background:
+        linear-gradient(135deg, var(--bg), #0f172a),
+        radial-gradient(circle at 14px 14px, #ffffff4d 2px, transparent 3px);
+      background-size: 100% 100%, 45px 45px;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: conic-gradient(#ffffff33 0 90deg, transparent 90deg 180deg);
+      background-size: 180px 180px;
+      opacity: 0.18;
+      animation: eat-dots 14s linear infinite;
+      pointer-events: none;
+      z-index: -3;
+    }
+    @keyframes eat-dots {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      50%  { transform: translate(10vw,-6vh) rotate(180deg); opacity:0.06; }
+      100% { transform: translate(0,0) rotate(360deg); }
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, transparent, var(--cyan), transparent) left 22px top / 2px 100% no-repeat,
+        linear-gradient(to bottom, transparent, var(--primary), transparent) right 22px top / 2px 100% no-repeat;
+      opacity: .25;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .side-orb {
+      position: fixed;
+      top: 20%;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: .35;
+      animation: floatOrb 14s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .side-orb.left {
+      left: -120px;
+      background: radial-gradient(circle, var(--cyan), transparent 70%);
+    }
+    .side-orb.right {
+      right: -120px;
+      background: radial-gradient(circle, var(--primary), transparent 70%);
+      animation-delay: 6s;
+    }
+    @keyframes floatOrb {
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-90px); }
+    }
+
+    .success-container {
+      max-width: 650px;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 45px -14px rgba(0,0,0,0.6);
+      text-align: center;
+      animation: slideUp 0.6s cubic-bezier(.22,1,.36,1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .success-container::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.1), transparent 60%);
+      animation: rotate 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .checkmark-wrapper {
+      position: relative;
+      margin: 0 auto 2rem;
+      width: 120px;
+      height: 120px;
+    }
+
+    .checkmark-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.5s cubic-bezier(.22,1,.36,1);
+      box-shadow: 0 10px 40px rgba(56, 189, 248, 0.4);
+      position: relative;
+    }
+
+    @keyframes scaleIn {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .checkmark {
+      width: 60px;
+      height: 60px;
+      stroke: white;
+      stroke-width: 4;
+      stroke-linecap: round;
+      fill: none;
+      animation: checkmark 0.8s ease-in-out 0.3s forwards;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+    }
+
+    @keyframes checkmark {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--cyan);
+      opacity: 0;
+      animation: confettiFall 3s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
+    }
+
+    .confetti:nth-child(1) { left: 10%; background: var(--cyan); animation-delay: 0.1s; }
+    .confetti:nth-child(2) { left: 20%; background: var(--primary); animation-delay: 0.2s; }
+    .confetti:nth-child(3) { left: 30%; background: #a855f7; animation-delay: 0.3s; }
+    .confetti:nth-child(4) { left: 40%; background: #fbbf24; animation-delay: 0.1s; }
+    .confetti:nth-child(5) { left: 50%; background: #ec4899; animation-delay: 0.2s; }
+    .confetti:nth-child(6) { left: 60%; background: var(--cyan); animation-delay: 0.3s; }
+    .confetti:nth-child(7) { left: 70%; background: var(--primary); animation-delay: 0.1s; }
+    .confetti:nth-child(8) { left: 80%; background: #a855f7; animation-delay: 0.2s; }
+    .confetti:nth-child(9) { left: 90%; background: #fbbf24; animation-delay: 0.3s; }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.5rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--cyan), #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      animation: fadeIn 0.6s ease-in 0.4s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      animation: fadeIn 0.6s ease-in 0.5s both;
+    }
+
+    .virtual-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--cyan), #0ea5e9);
+      color: #000;
+      padding: 0.75rem 2rem;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin: 1rem 0;
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+      animation: fadeIn 0.6s ease-in 0.55s both;
+    }
+
+    .order-info {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--cyan);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.6s ease-in 0.6s both;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+    }
+
+    .order-label {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    .order-value {
+      font-weight: 700;
+      color: var(--cyan);
+      font-size: 1rem;
+    }
+
+    .ticket-info {
+      background: rgba(10,14,26,0.6);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.6s ease-in 0.65s both;
+    }
+
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ticket-row:last-child {
+      border-bottom: none;
+    }
+
+    .ticket-label {
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+
+    .ticket-value {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    .link-box {
+      background: rgba(56, 189, 248, 0.05);
+      border: 1px solid var(--cyan);
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      word-break: break-all;
+      font-size: 0.9rem;
+    }
+
+    .link-box a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    .link-box a:hover {
+      text-decoration: underline;
+    }
+
+    .virtual-features {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(249, 115, 22, 0.05));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+      animation: fadeIn 0.6s ease-in 0.7s both;
+    }
+
+    .virtual-features h3 {
+      color: var(--cyan);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      color: var(--text-dim);
+    }
+
+    .feature-item svg {
+      flex-shrink: 0;
+      stroke: var(--cyan);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      animation: fadeIn 0.6s ease-in 0.75s both;
+    }
+
+    .btn {
+      padding: 14px 24px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: #000;
+      box-shadow: 0 6px 18px var(--cyan-glow);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 10px 30px var(--cyan-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:disabled {
+      background: #475569;
+      color: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #000;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .email-notice {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--cyan);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: fadeIn 0.6s ease-in 0.8s both;
+    }
+
+    .email-notice.success {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--success);
+    }
+
+    .email-notice.error {
+      background: rgba(248, 113, 113, 0.1);
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    .email-notice svg {
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+      .actions {
+        grid-template-columns: 1fr;
+      }
+      .side-orb { display: none; }
+      .success-container {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="side-orb left"></div>
+  <div class="side-orb right"></div>
+
+  <div class="success-container">
+    <!-- Confetti -->
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+
+    <!-- Success Checkmark -->
+    <div class="checkmark-wrapper">
+      <div class="checkmark-circle">
+        <svg class="checkmark" viewBox="0 0 52 52">
+          <path d="M14 27l7.5 7.5L38 18"/>
+        </svg>
+      </div>
+    </div>
+
+    <h1>Virtual Pass Confirmed!</h1>
+    <p class="subtitle">You're registered for online participation</p>
+
+    <div class="virtual-badge">🌐 VIRTUAL ATTENDEE</div>
+
+    <!-- Order Information -->
+    <div class="order-info">
+      <div class="order-row">
+        <span class="order-label">Order Number:</span>
+        <span class="order-value" id="order-number">Loading...</span>
+      </div>
+      <div class="order-row">
+        <span class="order-label">Order Date:</span>
+        <span class="order-value" id="order-date">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Ticket Information -->
+    <div class="ticket-info">
+      <div class="ticket-row">
+        <span class="ticket-label">Event</span>
+        <span class="ticket-value">Innovation Summit 2026</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-label">Event Date</span>
+        <span class="ticket-value" id="event-date">March 15-16, 2026</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-label">Access Type</span>
+        <span class="ticket-value">Virtual Pass (Online)</span>
+      </div>
+      <div class="ticket-row">
+        <span class="ticket-label">Amount Paid</span>
+        <span class="ticket-value">₹ <span id="total-amount">Loading...</span></span>
+      </div>
+    </div>
+
+    <!-- Virtual Features -->
+    <div class="virtual-features">
+      <h3>✨ What's Included in Your Virtual Pass</h3>
+      <div class="feature-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>Live stream access to all sessions</span>
+      </div>
+      <div class="feature-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>Recorded sessions available for 30 days</span>
+      </div>
+      <div class="feature-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>Access to Discord community</span>
+      </div>
+      <div class="feature-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>Live Q&A with speakers</span>
+      </div>
+      <div class="feature-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>Digital certificate of participation</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn btn-primary" id="send-email-btn" onclick="sendConfirmationEmail()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        Send Access Link
+      </button>
+      <a href="index.html" class="btn btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+
+    <!-- Email Notice -->
+    <div class="email-notice" id="email-notice">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="16" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+      <p id="email-status">Click "Send Access Link" to receive your virtual event details at <strong id="user-email-display">your email</strong></p>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      console.log('✅ Virtual success page loaded');
+
+      // Initialize EmailJS
+      emailjs.init('vGq9SuSWj-zxBtQuN');
+
+      // Initialize Firebase
+      firebase.initializeApp({
+        apiKey: "AIzaSyCv2_J69ZSHvqtHZmyoDTzabSnysRuw12g",
+        authDomain: "summit26-849b4.firebaseapp.com",
+        projectId: "summit26-849b4",
+        storageBucket: "summit26-849b4.firebasestorage.app",
+        messagingSenderId: "170185003096",
+        appId: "1:170185003096:web:27a6c5e3af61fbfd797a2d"
+      });
+      const db = firebase.firestore();
+
+      // Get docId from URL (this is critical)
+      const urlParams = new URLSearchParams(window.location.search);
+      const docId = urlParams.get('docId');
+
+      if (!docId) {
+        console.error("No docId found in URL");
+        document.getElementById('email-notice').className = 'email-notice error';
+        document.getElementById('email-status').innerHTML = 
+          '⚠️ Registration ID missing. Please go back or contact support.';
+        document.getElementById('send-email-btn').disabled = true;
+        document.getElementById('order-number').textContent = 'N/A – Missing ID';
+        return;
+      }
+
+      console.log("Loading virtual registration → docId:", docId);
+
+      // Fetch real data from Firestore
+      db.collection("registrations").doc(docId).get()
+        .then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            console.log("Loaded real data:", data);
+
+            // Order Number – clean display
+            let orderDisplay = data.orderId || 'N/A – Contact Support';
+            if (orderDisplay.startsWith('PENDING')) {
+              orderDisplay = 'Payment Confirmed – Order Processing';
+            }
+            document.getElementById('order-number').textContent = orderDisplay;
+
+            // Order Date
+            document.getElementById('order-date').textContent = data.paidAt 
+              ? new Date(data.paidAt.toDate()).toLocaleDateString('en-US', { 
+                  year: 'numeric', month: 'long', day: 'numeric' 
+                }) 
+              : new Date().toLocaleDateString('en-US', { 
+                  year: 'numeric', month: 'long', day: 'numeric' 
+                });
+
+            // Amount Paid
+            const base = 499;
+            const gst = (base * 0.18).toFixed(2);
+            const total = (base + parseFloat(gst)).toFixed(2);
+            document.getElementById('total-amount').textContent = total;
+
+            // Prepare data for email
+            window.registrationData = {
+              email: data.email || '',
+              name: data.name || 'Attendee',
+              orderNumber: orderDisplay,
+              ticketType: 'Virtual Pass',
+              totalAmount: total,
+              paymentId: data.paymentId || 'N/A',
+              streamingLink: 'https://stream.innovationsummit.com/2026',
+              discordLink: 'https://discord.gg/innovationsummit2026'
+            };
+
+            document.getElementById('user-email-display').textContent = data.email || 'your email';
+
+            if (!data.email) {
+              document.getElementById('email-notice').className = 'email-notice error';
+              document.getElementById('email-status').innerHTML = 
+                '⚠️ No email found in registration. Contact support with order: ' + orderDisplay;
+              document.getElementById('send-email-btn').disabled = true;
+            }
+
+          } else {
+            console.error("No document found for docId:", docId);
+            document.getElementById('order-number').textContent = 'Not Found';
+            document.getElementById('email-notice').className = 'email-notice error';
+            document.getElementById('email-status').innerHTML = 
+              '⚠️ Registration record not found. Contact support with Payment ID from your email.';
+            document.getElementById('send-email-btn').disabled = true;
+          }
+        })
+        .catch(err => {
+          console.error("Firestore fetch error:", err);
+          document.getElementById('order-number').textContent = 'Error Loading';
+          document.getElementById('email-notice').className = 'email-notice error';
+          document.getElementById('email-status').innerHTML = 
+            '⚠️ Error loading registration. Please refresh or contact support.';
+        });
+
+      // Send confirmation email with real data
+      window.sendConfirmationEmail = async function() {
+        if (!window.registrationData || !window.registrationData.email) {
+          alert('No email or registration data available. Contact support.');
+          return;
+        }
+
+        const btn = document.getElementById('send-email-btn');
+        const notice = document.getElementById('email-notice');
+        const status = document.getElementById('email-status');
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span> Sending...';
+        notice.className = 'email-notice';
+        status.innerHTML = `Sending virtual access details to <strong>${window.registrationData.email}</strong>...`;
+
+        const params = {
+          to_email: window.registrationData.email,
+          to_name: window.registrationData.name,
+          order_number: window.registrationData.orderNumber,
+          order_date: new Date().toLocaleDateString(),
+          ticket_type: window.registrationData.ticketType,
+          total_amount: '₹' + window.registrationData.totalAmount,
+          payment_id: window.registrationData.paymentId,
+          streaming_link: window.registrationData.streamingLink,
+          discord_link: window.registrationData.discordLink
+        };
+
+        try {
+          await emailjs.send('service_azkanxr', 'template_virtual_pass', params);
+          console.log('Virtual confirmation email sent');
+
+          notice.className = 'email-notice success';
+          status.innerHTML = `✓ Access details sent to <strong>${window.registrationData.email}</strong>!`;
+          btn.innerHTML = 'Email Sent ✓';
+        } catch (error) {
+          console.error('Email send failed:', error);
+          notice.className = 'email-notice error';
+          status.innerHTML = `✗ Failed to send: ${error.text || 'Unknown error'}`;
+          btn.innerHTML = 'Retry Send';
+          btn.disabled = false;
+        }
+      };
+
+      // Cursor trail effect (your original code)
+      const trails = [];
+      const trailCount = 5;
+
+      for (let i = 0; i < trailCount; i++) {
+        const trail = document.createElement('div');
+        trail.className = 'cursor-trail';
+        document.body.appendChild(trail);
+        trails.push({ element: trail, x: 0, y: 0, opacity: 1 - (i / trailCount) });
+      }
+
+      let mouseX = 0, mouseY = 0;
+      document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+      function animateTrails() {
+        trails.forEach((trail, i) => {
+          if (i === 0) {
+            trail.x = mouseX;
+            trail.y = mouseY;
+          } else {
+            const prev = trails[i - 1];
+            trail.x += (prev.x - trail.x) * 0.3;
+            trail.y += (prev.y - trail.y) * 0.3;
+          }
+          trail.element.style.left = trail.x + 'px';
+          trail.element.style.top = trail.y + 'px';
+          trail.element.style.opacity = trail.opacity;
+        });
+        requestAnimationFrame(animateTrails);
+      }
+      animateTrails();
+
+      let trailTimeout;
+      document.addEventListener('mousemove', () => {
+        trails.forEach(t => t.element.style.opacity = t.opacity);
+        clearTimeout(trailTimeout);
+        trailTimeout = setTimeout(() => trails.forEach(t => t.element.style.opacity = 0), 1000);
+      });
+
+      console.log('✅ Virtual success page ready');
+    })();
+  </script>
+</body>
+</html>

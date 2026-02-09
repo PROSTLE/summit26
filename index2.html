@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About the Event | Innovation Summit 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#f97316;
+  --primary-glow:rgba(249,115,22,.28);
+  --bg:#0a0e1a;
+  --card:rgba(20,27,46,.82);
+  --border:#2a3349;
+  --text:#f8f9fc;
+  --text-dim:#a0b0d0;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="4" fill="%23fbbf24" opacity="0.3"/></g></svg>') 24 24, auto;
+}
+
+/* Custom cursor for clickable elements */
+a, button, .info-card {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><g transform="rotate(-45 24 24)"><path fill="%23f97316" d="M24 4 L28 14 L30 24 L28 34 L24 44 L20 34 L18 24 L20 14 Z"/><path fill="%23000" d="M24 8 L26.5 16 L27.5 24 L26.5 32 L24 40 L21.5 32 L20.5 24 L21.5 16 Z"/><ellipse cx="24" cy="42" rx="6" ry="3" fill="%23ea580c" opacity="0.7"/><circle cx="24" cy="10" r="3" fill="%23fbbf24"/><circle cx="24" cy="8" r="5" fill="%23fbbf24" opacity="0.4"/><circle cx="24" cy="6" r="6" fill="%23fbbf24" opacity="0.2"/></g></svg>') 24 24, pointer;
+}
+
+/* Cursor trail effect */
+.cursor-trail {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:
+    linear-gradient(135deg,var(--bg),#0f172a),
+    radial-gradient(circle at 14px 14px,#ffffff4d 2px,transparent 3px);
+  background-size:100% 100%,45px 45px;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Neon side rails */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(to bottom,transparent,var(--primary),transparent)
+      left 22px top/2px 100% no-repeat,
+    linear-gradient(to bottom,transparent,#38bdf8,transparent)
+      right 22px top/2px 100% no-repeat;
+  opacity:.25;
+  pointer-events:none;
+  z-index:-2;
+}
+
+/* Floating orbs */
+.side-orb{
+  position:fixed;
+  top:22%;
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  filter:blur(50px);
+  opacity:.35;
+  animation:float 14s ease-in-out infinite;
+  pointer-events:none;
+  z-index:-1;
+}
+.side-orb.left{
+  left:-120px;
+  background:radial-gradient(circle,#f97316,transparent 70%);
+}
+.side-orb.right{
+  right:-120px;
+  background:radial-gradient(circle,#38bdf8,transparent 70%);
+  animation-delay:6s;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-90px);}
+}
+
+/* Header */
+header{
+  padding:5rem 1rem 4rem;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+h1{
+  font-size:clamp(2.8rem,8vw,4.2rem);
+  font-weight:800;
+  background:linear-gradient(90deg,#fff,var(--primary),#ffb26b);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 25px var(--primary-glow);
+}
+.tagline{
+  color:var(--text-dim);
+  font-size:1.15rem;
+  margin-top:.8rem;
+}
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:0 1.25rem 5rem;
+}
+
+section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:2.6rem;
+  margin:3rem 0;
+  backdrop-filter:blur(10px);
+  box-shadow:0 18px 45px -14px rgba(0,0,0,.6);
+}
+
+h2{
+  color:var(--primary);
+  margin-bottom:1.2rem;
+}
+
+p{
+  color:var(--text-dim);
+  line-height:1.7;
+  font-size:1.05rem;
+}
+
+/* Highlight grid */
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.4rem;
+  margin-top:2rem;
+}
+
+.info-card{
+  background:rgba(10,14,26,.6);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.6rem;
+  transition:.3s;
+}
+.info-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 25px var(--primary-glow);
+}
+
+.info-card h3{
+  color:var(--primary);
+  margin-bottom:.6rem;
+}
+
+/* Timeline */
+.timeline{
+  border-left:2px solid var(--border);
+  padding-left:2rem;
+  margin-top:1.5rem;
+}
+.timeline-item{
+  margin-bottom:2rem;
+  position:relative;
+}
+.timeline-item::before{
+  content:"";
+  position:absolute;
+  left:-11px;
+  top:4px;
+  width:14px;
+  height:14px;
+  background:var(--primary);
+  border-radius:50%;
+  box-shadow:0 0 12px var(--primary-glow);
+}
+
+/* CTA */
+.cta{
+  text-align:center;
+}
+.cta a{
+  display:inline-block;
+  margin-top:1.2rem;
+  padding:14px 28px;
+  background:var(--primary);
+  color:#000;
+  font-weight:800;
+  border-radius:14px;
+  text-decoration:none;
+  box-shadow:0 8px 25px var(--primary-glow);
+}
+
+@media(max-width:640px){
+  .side-orb{display:none;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="side-orb left"></div>
+<div class="side-orb right"></div>
+
+<header>
+  <h1>Innovation Summit 2026</h1>
+  <p class="tagline">Two Days. Infinite Ideas. One Future.</p>
+</header>
+
+<main>
+
+<section>
+  <h2>What is Innovation Summit?</h2>
+  <p>
+    Innovation Summit 2026 is a high-energy, future-focused tech conference bringing together
+    developers, designers, founders, and curious minds to explore what's next in technology.
+    Expect real-world insights, hands-on learning, and conversations that matter.
+  </p>
+</section>
+
+<section>
+  <h2>Why You Should Attend</h2>
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>🧠 Learn</h3>
+      <p>Deep dives into AI, Web3, Robotics, Cloud, and modern developer tools.</p>
+    </div>
+    <div class="info-card">
+      <h3>🤝 Network</h3>
+      <p>Meet industry experts, startup founders, and like-minded builders.</p>
+    </div>
+    <div class="info-card">
+      <h3>🚀 Build</h3>
+      <p>Hands-on sessions, real projects, and practical takeaways.</p>
+    </div>
+    <div class="info-card">
+      <h3>🎮 Experience</h3>
+      <p>A game-themed tech event that's fun, fast, and unforgettable.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Event Flow</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <h3>Day 1 — Exploration</h3>
+      <p>Keynotes, future tech talks, and interactive sessions.</p>
+    </div>
+    <div class="timeline-item">
+      <h3>Day 2 — Execution</h3>
+      <p>Workshops, networking, demos, and collaboration.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Ready to Play?</h2>
+  <p>Secure your spot and level up your tech journey.</p>
+  <a href="index.html#register">Register Now 🚀</a>
+</section>
+
+</main>
+
+<script>
+// ── CURSOR TRAIL EFFECT ────────────────────────────
+const trails = [];
+const trailCount = 5;
+
+// Create trail elements
+for (let i = 0; i < trailCount; i++) {
+  const trail = document.createElement('div');
+  trail.className = 'cursor-trail';
+  document.body.appendChild(trail);
+  trails.push({
+    element: trail,
+    x: 0,
+    y: 0,
+    opacity: 1 - (i / trailCount)
+  });
+}
+
+let mouseX = 0;
+let mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateTrails() {
+  trails.forEach((trail, index) => {
+    if (index === 0) {
+      trail.x = mouseX;
+      trail.y = mouseY;
+    } else {
+      const prevTrail = trails[index - 1];
+      trail.x += (prevTrail.x - trail.x) * 0.3;
+      trail.y += (prevTrail.y - trail.y) * 0.3;
+    }
+
+    trail.element.style.left = trail.x + 'px';
+    trail.element.style.top = trail.y + 'px';
+    trail.element.style.opacity = trail.opacity;
+  });
+
+  requestAnimationFrame(animateTrails);
+}
+
+animateTrails();
+
+// Show trails on mouse move
+let trailTimeout;
+document.addEventListener('mousemove', () => {
+  trails.forEach(trail => trail.element.style.opacity = trail.opacity);
+  clearTimeout(trailTimeout);
+  trailTimeout = setTimeout(() => {
+    trails.forEach(trail => trail.element.style.opacity = 0);
+  }, 1000);
+});
+</script>
+
+</body>
+</html>
